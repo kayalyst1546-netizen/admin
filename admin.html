@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>미래에셋증권 창원WM 고객응대 시스템 (대형 화면 모드)</title>
+    <style>
+        /* 미래에셋 프리미엄 가이드라인 CSS */
+        :root {
+            --mirae-navy: #002266;
+            --mirae-navy-mid: #0a2f75;
+            --mirae-orange: #E85B00;
+            --mirae-orange-hover: #CC4E00;
+            --bg-neutral: #f4f6fa;
+            --border-light: #e5e7eb;
+            --text-dark: #1e293b;
+            --shadow-premium: 0 12px 30px rgba(0, 34, 102, 0.08);
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR", sans-serif;
+            background-color: var(--bg-neutral); 
+            color: var(--text-dark);
+            margin: 0; 
+            padding: 0; 
+            letter-spacing: -0.5px;
+        }
+        
+        /* 🔒 프리미엄 로그인 인터페이스 */
+        .login-overlay { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background: linear-gradient(135deg, #020f2b 0%, #00153d 100%); 
+        }
+        
+        .login-card { 
+            background: white; 
+            padding: 50px; 
+            border-radius: 24px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4); 
+            width: 100%; 
+            max-width: 460px; 
+            text-align: center; 
+            box-sizing: border-box;
+            border-top: 8px solid var(--mirae-orange);
+        }
+        
+        .login-logo { 
+            font-size: 34px; 
+            font-weight: 900; 
+            color: var(--mirae-navy); 
+            margin-bottom: 8px; 
+            letter-spacing: -1.5px; 
+        }
+        
+        .login-subtitle { 
+            font-size: 16px; 
+            color: #64748b; 
+            margin-bottom: 40px; 
+            font-weight: bold; 
+        }
+        
+        .login-field { 
+            margin-bottom: 24px; 
+            text-align: left; 
+        }
+        
+        .login-field label { 
+            display: block; 
+            font-size: 15px; 
+            color: #475569; 
+            margin-bottom: 8px; 
+            font-weight: bold; 
+        }
+        
+        .login-input { 
+            width: 100%; 
+            padding: 16px; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            box-sizing: border-box; 
+            outline: none; 
+            transition: all 0.2s;
+            background-color: #f8fafc;
+        }
+        
+        .login-input:focus { 
+            border-color: var(--mirae-orange); 
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(232, 91, 0, 0.1);
+        }
+        
+        .login-btn { 
+            width: 100%; 
+            background-color: var(--mirae-orange); 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            margin-top: 15px; 
+            transition: all 0.2s;
+        }
+        
+        .login-btn:hover { 
+            background-color: var(--mirae-orange-hover); 
+        }
+        
+        /* 🖥️ 메인 종합 관제 화면 */
+        #adminDashboard { display: none; }
+        
+        .brand-header { 
+            background-color: var(--mirae-navy); 
+            color: white; 
+            padding: 26px 60px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .header-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-symbol {
+            width: 36px;
+            height: 36px;
+            background: var(--mirae-orange);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+        }
+        
+        .brand-header h1 { 
+            margin: 0; 
+            font-size: 30px; 
+            font-weight: 800; 
+            letter-spacing: -1px;
+        }
+
+        /* 헤더 기능 관리 패널 */
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .action-reset-btn { 
+            background-color: transparent; 
+            color: white; 
+            border: 1.5px solid rgba(255,255,255,0.4); 
+            padding: 12px 20px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        
+        .action-reset-btn:hover { 
+            background-color: rgba(255,255,255,0.1); 
+        }
+
+        /* 🔔 알림 셋업 센터 전용 바 */
+        .notification-setup-bar {
+            background-color: #ffe8cc;
+            color: #d9480f;
+            padding: 12px 60px;
+            font-size: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ffd8a8;
+        }
+
+        .setup-btn {
+            background-color: var(--mirae-orange);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .setup-btn:hover {
+            background-color: var(--mirae-orange-hover);
+        }
+        
+        .dashboard-container { 
+            padding: 40px 60px; 
+            max-width: 1680px; 
+            margin: 0 auto; 
+        }
+        
+        /* 📊 통계 위젯 카드형 레이아웃 */
+        .metric-group { 
+            display: flex; 
+            gap: 24px; 
+            margin-bottom: 40px; 
+        }
+        
+        .metric-card { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 28px; 
+            flex: 1; 
+            box-shadow: var(--shadow-premium); 
+            border-left: 6px solid #cbd5e1; 
+            transition: all 0.2s;
+        }
+        
+        .metric-card.alert-style { 
+            border-left-color: var(--mirae-orange); 
+        }
+        
+        .metric-title { 
+            font-size: 16px; 
+            color: #64748b; 
+            margin-bottom: 10px; 
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .metric-value { 
+            font-size: 45px; 
+            font-weight: 900; 
+            color: #0f172a; 
+        }
+
+        .metric-value span {
+            font-size: 22px;
+            color: #64748b;
+            font-weight: normal;
+            margin-left: 4px;
+        }
+        
+        /* 리스트 관리 테이블 구역 */
+        .block-title { 
+            font-size: 24px; 
+            font-weight: 800; 
+            margin-bottom: 20px; 
+            border-left: 6px solid var(--mirae-orange); 
+            padding-left: 14px; 
+            color: var(--mirae-navy);
+        }
+        
+        .block-title.invest { 
+            border-left-color: var(--mirae-navy); 
+            margin-top: 55px; 
+        }
+        
+        .grid-table-container { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 16px 28px; 
+            box-shadow: var(--shadow-premium); 
+            margin-bottom: 30px; 
+            border: 1px solid #f1f5f9;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        
+        th { 
+            border-bottom: 3px solid #e2e8f0; 
+            padding: 18px 14px; 
+            text-align: left; 
+            color: #475569; 
+            font-size: 16px; 
+            font-weight: bold;
+        }
+        
+        td { 
+            padding: 20px 14px; 
+            border-bottom: 1px solid #f1f5f9; 
+            font-size: 17px; 
+            color: #1e293b; 
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* 🚨 시각적 점멸 효과 애니메이션 코드 */
+        @keyframes emergencyBlink {
+            0% { background-color: #ffffff; }
+            50% { background-color: rgba(232, 91, 0, 0.18); } 
+            100% { background-color: #ffffff; }
+        }
+
+        .blink-row td {
+            animation: emergencyBlink 1.5s infinite ease-in-out;
+            font-weight: bold;
+        }
+        
+        .num-ticket-badge { 
+            font-size: 18px; 
+            font-weight: 800; 
+            color: var(--mirae-navy); 
+            background: #f0f4f8; 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            display: inline-block;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .detail-memo-badge { 
+            display: inline-block; 
+            font-size: 14px; 
+            color: var(--mirae-orange); 
+            background: #fff8f5; 
+            padding: 6px 12px; 
+            border-radius: 6px; 
+            border: 1px dashed #ffd8a8; 
+            margin-top: 8px; 
+            font-weight: bold; 
+        }
+
+        /* 👥 접수 직원 태깅 전용 뱃지 */
+        .regstaff-detail-badge {
+            display: inline-block;
+            font-size: 14px;
+            color: #1e3a8a;
+            background: #eff6ff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #bfdbfe;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+        
+        .allocated-pb { 
+            color: var(--mirae-orange); 
+            font-weight: bold; 
+            font-size: 15px; 
+            display: block; 
+            margin-bottom: 8px; 
+        }
+        
+        .manager-input { 
+            border: 2px solid #cbd5e1; 
+            padding: 10px 14px; 
+            border-radius: 8px; 
+            width: 140px; 
+            outline: none; 
+            font-size: 15px;
+            transition: all 0.15s;
+        }
+
+        .manager-input:focus {
+            border-color: var(--mirae-orange);
+            box-shadow: 0 0 0 3px rgba(232, 91, 0, 0.1);
+        }
+        
+        .call-complete-btn { 
+            background-color: var(--mirae-navy); 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 15px;
+            margin-left: 8px; 
+            transition: all 0.2s;
+        }
+        
+        .call-complete-btn:hover { 
+            background-color: var(--mirae-navy-mid); 
+        }
+        
+        .archive-section { 
+            opacity: 0.8; 
+            margin-top: 60px; 
+        }
+        
+        .empty-row-msg { 
+            padding: 50px; 
+            color: #94a3b8; 
+            font-style: italic; 
+            font-size: 16px; 
+            text-align: center; 
+        }
+
+        /* 🧡 이중 안전 장치: 사내 보안용 브라우저 내부 수제 미니 팝업 (가로세로 약 5~6cm 규격) */
+        .inapp-popup-card {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 250px;
+            background: white;
+            border-radius: 16px;
+            border-top: 6px solid var(--mirae-orange);
+            box-shadow: 0 10px 30px rgba(0, 34, 102, 0.25);
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 9999;
+            display: none;
+            animation: slideUpPopup 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+        }
+
+        @keyframes slideUpPopup {
+            from { transform: translateY(50px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .inapp-popup-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--mirae-orange);
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .inapp-popup-body {
+            font-size: 14px;
+            color: #334155;
+            margin: 0 0 16px 0;
+            line-height: 1.4;
+        }
+
+        .inapp-popup-close-btn {
+            width: 100%;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .inapp-popup-close-btn:hover {
+            background: #e2e8f0;
+        }
+
+        /* 🛡️ 공용 커스텀 알림/확인 모달 디자인 */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 20, 60, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10000;
+        }
+        .custom-modal-box {
+            background: white;
+            border-radius: 16px;
+            width: 90%; max-width: 440px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-top: 6px solid var(--mirae-orange);
+            text-align: center;
+        }
+        .custom-modal-header {
+            font-size: 20px; font-weight: bold; color: var(--mirae-navy); margin-bottom: 12px;
+        }
+        .custom-modal-body {
+            font-size: 16px; color: #475569; margin-bottom: 26px; line-height: 1.6;
+            white-space: pre-line;
+        }
+        .custom-modal-footer {
+            display: flex; justify-content: center; gap: 12px;
+        }
+        .custom-modal-btn {
+            padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .custom-modal-btn.confirm {
+            background: var(--mirae-orange); color: white;
+        }
+        .custom-modal-btn.confirm:hover {
+            background: var(--mirae-orange-hover);
+        }
+        .custom-modal-btn.cancel {
+            background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1;
+        }
+        .custom-modal-btn.cancel:hover {
+            background: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🔒 프리미엄 로그인 게이트 화면 -->
+    <div id="loginScreen" class="login-overlay">
+        <div class="login-card">
+            <div class="login-logo">미래에셋증권</div>
+            <div class="login-subtitle">고객응대 시스템 로그인</div>
+            
+            <div class="login-field">
+                <label for="id">ID</label>
+                <input type="text" id="id" class="login-input" value="mirae" placeholder="사원 ID 입력">
+            </div>
+            <div class="login-field">
+                <label for="pw">비밀번호</label>
+                <input type="password" id="pw" class="login-input" value="200055" placeholder="비밀번호 입력" onkeyup="if(window.event.keyCode==13){handleLogin()}">
+            </div>
+            
+            <button class="login-btn" onclick="handleLogin()">보안 로그인</button>
+        </div>
+    </div>
+
+    <!-- 🖥️ 메인 종합 관제 화면 -->
+    <div id="adminDashboard">
+        <!-- 🔔 알림 셋업 센터 (알림 권한 문제 해결용 전용 바) -->
+        <div id="setupBar" class="notification-setup-bar" style="display: none;">
+            <div>⚠️ 현재 브라우저의 바탕화면 팝업 알림 권한이 필요합니다. 완벽한 연동을 위해 우측 활성화 버튼을 눌러주세요.</div>
+            <button class="setup-btn" onclick="requestPermissionDirectly()">🔔 바탕화면 알림 활성화</button>
+        </div>
+
+        <div class="brand-header">
+            <div class="header-logo-group">
+                <div class="header-symbol">M</div>
+                <h1>미래에셋증권 투자센터창원WM</h1>
+            </div>
+            <div class="header-controls">
+                <!-- 즉각 테스트 가능한 샌드박스 버튼 탑재 -->
+                <button class="action-reset-btn" style="background-color: var(--mirae-orange); border: none;" onclick="triggerTestNotification()">📢 즉시 알림 테스트</button>
+                <button class="action-reset-btn" onclick="confirmResetStatistics()">📊 오늘 통계 초기화</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <!-- 종합 인덱스 지표 현황판 -->
+            <div class="metric-group">
+                <div class="metric-card alert-style">
+                    <div class="metric-title">실시간 대기 인원</div>
+                    <div class="metric-value"><span id="txtWait">0</span><span>명</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">오늘 누적 완료</div>
+                    <div class="metric-value"><span id="txtDone">0</span><span>명</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">일반 대기 현황</div>
+                    <div class="metric-value"><span id="txtTask">0</span><span>명</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">상담 대기 현황</div>
+                    <div class="metric-value"><span id="txtInvest">0</span><span>명</span></div>
+                </div>
+            </div>
+            
+            <!-- 테이블 1: 일반 업무 -->
+            <div class="block-title">일반 업무 대기 목록</div>
+            <div class="grid-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:140px;">방문접수시간</th>
+                            <th style="width:160px;">대기번호</th>
+                            <th>구분 및 지정 업무</th>
+                            <th style="width:320px;">응대 담당자 입력</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblTask"></tbody>
+                </table>
+            </div>
+            
+            <!-- 테이블 2: 투자 상담 -->
+            <div class="block-title invest">투자 상담 대기 목록</div>
+            <div class="grid-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:140px;">방문접수시간</th>
+                            <th style="width:160px;">대기번호</th>
+                            <th>구분 및 상세 요청 업무</th>
+                            <th style="width:320px;">희망 PB 지정 및 응대 처리</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblInvest"></tbody>
+                </table>
+            </div>
+            
+            <!-- 테이블 3: 완료 아카이브 -->
+            <div class="block-title" style="margin-top:60px; border-left-color:#64748b;">당일 응대 완료 이력</div>
+            <div class="grid-table-container archive-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:140px;">완료처리시간</th>
+                            <th style="width:160px;">대기번호</th>
+                            <th>응대 업무 종류</th>
+                            <th>고객 희망 지정 PB</th>
+                            <th style="width:160px;">접수 직원</th>
+                            <th>실제 업무 응대 PB</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblHistory"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🧡 이중 안심 브라우저 내부 수제 미니 팝업창 -->
+    <div id="inAppPopup" class="inapp-popup-card">
+        <div class="inapp-popup-title">
+            <span style="font-size:18px;">🔔</span> <span id="inAppPopupTitle">투자상담 접수</span>
+        </div>
+        <div class="inapp-popup-body" id="inAppPopupBody">
+            대기번호: No. 5번<br>
+            업무: 종합 자산관리 상담<br>
+            지정PB: 이광희 수석
+        </div>
+        <button class="inapp-popup-close-btn" onclick="closeInAppPopup()">알림 확인 및 닫기</button>
+    </div>
+
+    <!-- 🛡️ 공용 커스텀 알림/확인 모달 오버레이 (iFrame 환경 안전 무력화 극복용) -->
+    <div id="customModal" class="custom-modal-overlay" style="display: none;">
+        <div class="custom-modal-box">
+            <div class="custom-modal-header" id="customModalHeader">안내</div>
+            <div class="custom-modal-body" id="customModalBody">내용</div>
+            <div class="custom-modal-footer">
+                <button id="customModalCancelBtn" class="custom-modal-btn cancel" style="display: none;">취소</button>
+                <button id="customModalConfirmBtn" class="custom-modal-btn confirm">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const todayDate = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        const TOPIC_URL = `https://ntfy.sh/mirae_asset_kiosk_changwon_${todayDate}`;
+        const ORIGINAL_TITLE = "미래에셋증권 창원WM 고객응대 시스템 (대형 화면 모드)";
+        
+        const silentAudio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAAAD');
+        silentAudio.loop = true;
+
+        let state = { list: {}, history: [] };
+        let sseStream = null;
+        let tabBlinkInterval = null; 
+
+        /* 🛡️ 브라우저 alert() 대체용 공용 모달 호출 함수 */
+        function showCustomAlert(title, message, callback) {
+            document.getElementById('customModalHeader').innerText = title;
+            document.getElementById('customModalBody').innerText = message;
+            const cancelBtn = document.getElementById('customModalCancelBtn');
+            const confirmBtn = document.getElementById('customModalConfirmBtn');
+            
+            cancelBtn.style.display = 'none';
+            confirmBtn.onclick = function() {
+                document.getElementById('customModal').style.display = 'none';
+                if (callback) callback();
+            };
+            document.getElementById('customModal').style.display = 'flex';
+        }
+
+        /* 🛡️ 브라우저 confirm() 대체용 공용 모달 호출 함수 */
+        function showCustomConfirm(title, message, onConfirm, onCancel) {
+            document.getElementById('customModalHeader').innerText = title;
+            document.getElementById('customModalBody').innerText = message;
+            const cancelBtn = document.getElementById('customModalCancelBtn');
+            const confirmBtn = document.getElementById('customModalConfirmBtn');
+            
+            cancelBtn.style.display = 'inline-block';
+            confirmBtn.onclick = function() {
+                document.getElementById('customModal').style.display = 'none';
+                if (onConfirm) onConfirm();
+            };
+            cancelBtn.onclick = function() {
+                document.getElementById('customModal').style.display = 'none';
+                if (onCancel) onCancel();
+            };
+            document.getElementById('customModal').style.display = 'flex';
+        }
+
+        function handleLogin() {
+            const parsedId = document.getElementById('id').value;
+            const parsedPw = document.getElementById('pw').value;
+            if (parsedId === 'mirae' && parsedPw === '200055') {
+                sessionStorage.setItem('mirae_logged_in', 'true');
+                showDashboard();
+            } else { 
+                showCustomAlert('로그인 실패', '로그인 정보가 유효하지 않습니다.');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            
+            silentAudio.play().catch(()=>{});
+            checkNotificationPermission();
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: '고객 대기 관제 활성화 상태',
+                    artist: '미래에셋증권',
+                    album: '투자센터창원WM'
+                });
+            }
+
+            loadData();
+            initRealtimeConnection();
+        }
+
+        function checkNotificationPermission() {
+            if (!("Notification" in window)) return;
+
+            if (Notification.permission !== "granted") {
+                document.getElementById('setupBar').style.display = 'flex';
+            } else {
+                document.getElementById('setupBar').style.display = 'none';
+            }
+        }
+
+        async function requestPermissionDirectly() {
+            if (!("Notification" in window)) {
+                showCustomAlert('지원하지 않음', '이 브라우저는 바탕화면 알림 기능을 지원하지 않습니다.');
+                return;
+            }
+
+            const permission = await Notification.requestPermission();
+            if (permission === "granted") {
+                document.getElementById('setupBar').style.display = 'none';
+                playDesktopPushNotification({
+                    id: 'test_success',
+                    ticketNum: '77',
+                    group: 'invest',
+                    task: '바탕화면 알림 권한 획득 성공',
+                    pbName: '-',
+                    regStaff: '객장',
+                    detail: '미래에셋 알림이 정상적으로 연동되었습니다.'
+                });
+            } else {
+                showCustomAlert('알림 권한 필요', "알림 권한이 차단되었습니다. 주소창 왼쪽의 설정에서 알림 권한을 '허용'해 주셔야 정상적인 강제 팝업이 나갑니다.");
+            }
+        }
+
+        async function loadData() {
+            try {
+                const res = await fetch(`${TOPIC_URL}/json?poll=1`);
+                const rawText = await res.text();
+                const rows = rawText.split('\n');
+                state.list = {}; state.history = [];
+                
+                const resetTime = parseInt(localStorage.getItem('mirae_reset_timestamp') || '0');
+
+                rows.forEach(r => {
+                    if (!r.trim()) return;
+                    try {
+                        const parsed = JSON.parse(r);
+                        if (parsed.event === 'message') {
+                            const payload = JSON.parse(parsed.message);
+                            if (payload.action === 'add') {
+                                state.list[payload.id] = payload;
+                            } else if (payload.action === 'complete') {
+                                if (state.list[payload.id]) {
+                                    const item = state.list[payload.id];
+                                    if (parsed.time * 1000 >= resetTime) {
+                                        state.history.push({
+                                            finishTime: payload.finishTime, 
+                                            ticketNum: item.ticketNum,
+                                            task: item.task + (item.detail ? ` (${item.detail})` : ''),
+                                            requestedPB: item.pbName || '지정없음', 
+                                            regStaff: item.regStaff || '객장', 
+                                            actualPB: payload.actualPB
+                                        });
+                                    }
+                                    delete state.list[payload.id];
+                                }
+                            }
+                        }
+                    } catch(e) {}
+                });
+                render();
+            } catch(err) {}
+        }
+
+        function render() {
+            const listValues = Object.values(state.list);
+            const taskList = listValues.filter(i => i.group === 'task');
+            const investList = listValues.filter(i => i.group === 'invest');
+            
+            document.getElementById('txtWait').innerText = listValues.length;
+            document.getElementById('txtDone').innerText = state.history.length;
+            document.getElementById('txtTask').innerText = taskList.length;
+            document.getElementById('txtInvest').innerText = investList.length;
+
+            if (investList.length > 0) {
+                startTabBlink();
+            } else {
+                stopTabBlink();
+            }
+
+            const taskBody = document.getElementById('tblTask');
+            taskBody.innerHTML = taskList.length ? '' : '<tr><td colspan="4" class="empty-row-msg">현재 대기 중인 일반 업무 고객이 없습니다.</td></tr>';
+            
+            const investBody = document.getElementById('tblInvest');
+            investBody.innerHTML = investList.length ? '' : '<tr><td colspan="4" class="empty-row-msg">현재 대기 중인 투자 상담 고객이 없습니다.</td></tr>';
+
+            Object.keys(state.list).forEach((key) => {
+                const item = state.list[key];
+                const detailHtml = item.detail ? `<br><span class="detail-memo-badge">요청업무: ${item.detail}</span>` : '';
+                
+                // 👥 접수 직원 표시용 뱃지 세팅
+                const regStaffText = item.regStaff ? `접수자: ${item.regStaff}` : '로비 접수';
+                const regStaffHtml = `<br><span class="regstaff-detail-badge">✍️ ${regStaffText}</span>`;
+                
+                const rowClass = item.group === 'invest' ? 'class="blink-row"' : '';
+
+                const rowHtml = `<tr ${rowClass}>
+                    <td><b>${item.time}</b></td>
+                    <td><span class="num-ticket-badge">No. ${item.ticketNum}</span></td>
+                    <td><b style="color:var(--mirae-navy); font-size: 18px;">${item.task}</b>${detailHtml}${regStaffHtml}</td>
+                    <td>
+                        ${item.group === 'invest' ? `<span class="allocated-pb">희망: ${item.pbName}</span>` : ''}
+                        <input type="text" class="manager-input" id="pb_${key}" placeholder="WM이름">
+                        <button class="call-complete-btn" onclick="completeService('${key}')">응대완료</button>
+                    </td>
+                </tr>`;
+                
+                if(item.group === 'task') taskBody.innerHTML += rowHtml;
+                else investBody.innerHTML += rowHtml;
+            });
+
+            const hbody = document.getElementById('tblHistory');
+            hbody.innerHTML = state.history.length ? '' : '<tr><td colspan="6" class="empty-row-msg">금일 응대 완료된 기록이 없습니다.</td></tr>';
+            state.history.slice().reverse().forEach(item => {
+                hbody.innerHTML += `<tr>
+                    <td>${item.finishTime}</td>
+                    <td><span class="num-ticket-badge" style="background:#f8fafc; color:#64748b; font-size:15px; padding:4px 10px;">No. ${item.ticketNum}</span></td>
+                    <td>${item.task}</td>
+                    <td>${item.requestedPB}</td>
+                    <td><span style="font-weight:bold; color: #1e3a8a;">${item.regStaff || '객장'}</span></td>
+                    <td>${item.actualPB}</td>
+                </tr>`;
+            });
+        }
+
+        // 프리미엄 여성 목소리 TTS 엔진 (비동기 엔진 대기 로직 적용)
+        function playVoiceAlert(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const speech = new SpeechSynthesisUtterance(text);
+                speech.lang = 'ko-KR';
+                
+                const setVoiceAndSpeak = () => {
+                    const voices = window.speechSynthesis.getVoices();
+                    const koVoice = voices.find(v => v.lang.includes('KO') || v.lang.includes('ko'));
+                    if (koVoice) speech.voice = koVoice;
+                    
+                    speech.rate = 0.95; 
+                    speech.pitch = 1.05; 
+                    window.speechSynthesis.speak(speech);
+                };
+
+                if (window.speechSynthesis.getVoices().length === 0) {
+                    window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+                } else {
+                    setVoiceAndSpeak();
+                }
+            }
+        }
+
+        // 🚨 윈도우 바탕화면 우측 하단 강제 푸시 알림 배달 함수
+        function playDesktopPushNotification(payload) {
+            if (!("Notification" in window)) return;
+            
+            if (Notification.permission === "granted") {
+                const groupTitle = payload.group === 'invest' ? '🧡 [투자상담 신규접수]' : '💙 [일반업무 신규접수]';
+                const pbDetail = (payload.pbName && payload.pbName !== '-') ? `\n(희망지정: ${payload.pbName})` : '';
+                const regStaffDetail = payload.regStaff ? `\n(접수자: ${payload.regStaff})` : '';
+                const memoDetail = payload.detail ? `\n요청메모: ${payload.detail}` : '';
+                
+                try {
+                    const notification = new Notification(groupTitle, {
+                        body: `대기번호: No. ${payload.ticketNum}번\n업무구분: ${payload.task}${pbDetail}${regStaffDetail}${memoDetail}`,
+                        tag: payload.id, 
+                        requireInteraction: true 
+                    });
+
+                    notification.onclick = function() {
+                        window.focus(); 
+                        this.close();
+                    };
+                } catch (err) {
+                    console.log("윈도우 푸시 전송 우회");
+                }
+            }
+            
+            triggerInAppPopup(payload);
+        }
+
+        // 🛡️ 수제 내부 팝업 시스템
+        function triggerInAppPopup(payload) {
+            const popup = document.getElementById('inAppPopup');
+            const pTitle = document.getElementById('inAppPopupTitle');
+            const pBody = document.getElementById('inAppPopupBody');
+
+            const isInvest = payload.group === 'invest';
+            pTitle.innerText = isInvest ? '🔔 투자상담 접수 알림' : '🔔 일반업무 접수 알림';
+            popup.style.borderTopColor = isInvest ? 'var(--mirae-orange)' : 'var(--mirae-navy)';
+
+            const pbDetail = (payload.pbName && payload.pbName !== '-') ? `<br>지정PB: ${payload.pbName}` : '';
+            const regStaffDetail = payload.regStaff ? `<br>접수직원: ${payload.regStaff}` : '';
+            const memoDetail = payload.detail ? `<br>메모: ${payload.detail}` : '';
+
+            pBody.innerHTML = `
+                대기번호: <b>No. ${payload.ticketNum}번</b><br>
+                요청업무: ${payload.task}
+                ${pbDetail}
+                ${regStaffDetail}
+                ${memoDetail}
+            `;
+
+            popup.style.display = 'block';
+        }
+
+        function closeInAppPopup() {
+            document.getElementById('inAppPopup').style.display = 'none';
+        }
+
+        // 📢 [자가 점검기] 누르는 순간 즉시 알림이 나가는 원터치 테스트 함수
+        function triggerTestNotification() {
+            const testPayload = {
+                id: 'test_click_' + Date.now(),
+                ticketNum: '99',
+                group: 'invest',
+                task: '가상 종합 자산관리 상담',
+                pbName: '이광희 수석',
+                regStaff: '송은영',
+                detail: '작동 상태가 양호합니다! 이름 지정형 음성 및 팝업창 테스트 완료.',
+                time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            announceIncomingCall(testPayload);
+            playDesktopPushNotification(testPayload);
+        }
+
+        // 📣 [음성 핵심 분기] 지정형 / 미지정형 지능형 음성 호출 엔진
+        function announceIncomingCall(payload) {
+            if (payload.group === 'invest') {
+                const pb = payload.pbName ? payload.pbName.trim() : '';
+                
+                if (!pb || pb === '지정없음' || pb === '지정 없음' || pb === '-' || pb === '특정 직원 지정 없음') {
+                    playVoiceAlert('상담이 접수되었습니다.');
+                } else {
+                    const suffix = pb.endsWith('님') ? '' : '님';
+                    playVoiceAlert(`${pb}${suffix} 상담이 접수되었습니다.`);
+                }
+            } else if (payload.group === 'task') {
+                playVoiceAlert('업무가 접수되었습니다.');
+            }
+        }
+
+        function startTabBlink() {
+            if (tabBlinkInterval) return;
+            let isAlternate = false;
+            tabBlinkInterval = setInterval(() => {
+                document.title = isAlternate ? "🚨 [상담대기 접수됨!!]" : "미래에셋 창원WM 관제시스템";
+                isAlternate = !isAlternate;
+            }, 1000);
+        }
+
+        function stopTabBlink() {
+            if (tabBlinkInterval) {
+                clearInterval(tabBlinkInterval);
+                tabBlinkInterval = null;
+            }
+            document.title = ORIGINAL_TITLE;
+        }
+
+        // 🔄 끊김 방지용 무한 자동 연결 로직 탑재
+        function initRealtimeConnection() {
+            if (sseStream) {
+                sseStream.close();
+            }
+            sseStream = new EventSource(`${TOPIC_URL}/sse`);
+            
+            sseStream.onmessage = (e) => {
+                try {
+                    const parsed = JSON.parse(e.data);
+                    if (parsed.event === 'message') {
+                        const payload = JSON.parse(parsed.message);
+                        const resetTime = parseInt(localStorage.getItem('mirae_reset_timestamp') || '0');
+
+                        if (payload.action === 'add') {
+                            state.list[payload.id] = payload;
+                            silentAudio.play().catch(()=>{});
+
+                            announceIncomingCall(payload);
+                            playDesktopPushNotification(payload);
+
+                        } else if (payload.action === 'complete') {
+                            if (state.list[payload.id]) {
+                                const item = state.list[payload.id];
+                                if (parsed.time * 1000 >= resetTime) {
+                                    state.history.push({
+                                        finishTime: payload.finishTime, 
+                                        ticketNum: item.ticketNum,
+                                        task: item.task + (item.detail ? ` (${item.detail})` : ''),
+                                        requestedPB: item.pbName || '지정없음', 
+                                        regStaff: item.regStaff || '객장', 
+                                        actualPB: payload.actualPB
+                                    });
+                                }
+                                delete state.list[payload.id];
+                            }
+                        }
+                        render();
+                    }
+                } catch(err) {}
+            };
+
+            sseStream.onerror = () => {
+                console.log("네트워크 지연 감지: 3초 후 연결을 자동 복구합니다.");
+                if (sseStream) sseStream.close();
+                setTimeout(initRealtimeConnection, 3000);
+            };
+        }
+
+        async function completeService(key) {
+            const actualPB = document.getElementById(`pb_${key}`).value || "미입력";
+            const payload = {
+                action: 'complete', 
+                id: key, 
+                actualPB: actualPB,
+                finishTime: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+            };
+            await fetch(TOPIC_URL, { method: 'POST', body: JSON.stringify(payload) });
+        }
+
+        /* 🛡️ 브라우저 confirm()을 완전히 배제하고 커스텀 컨펌 모달로 가동하도록 우회한 데이터 리셋 로직 */
+        function confirmResetStatistics() {
+            showCustomConfirm(
+                '통계 수치 초기화',
+                "오늘 하루의 완료 이력과 상단 통계 수치를 초기화하시겠습니까?\n(현재 접수되어 대기 중인 미응대 고객 데이터는 완벽하게 유지됩니다.)",
+                function() {
+                    localStorage.setItem('mirae_reset_timestamp', Date.now().toString());
+                    loadData();
+                }
+            );
+        }
+
+        window.onload = function() {
+            if (sessionStorage.getItem('mirae_logged_in') === 'true') { 
+                showDashboard(); 
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.getVoices();
+            }
+        }
+    </script>
+</body>
+</html>
